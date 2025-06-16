@@ -1,0 +1,64 @@
+name: daily_groval_gnews
+
+on:
+  schedule:
+    # 매일 오후 6시 50분 (UTC 기준 09:50, 한국시간 18:50)
+    - cron: '50 9 * * *'
+  workflow_dispatch:
+jobs:
+  generate_groval_news_video:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 📥 코드 체크아웃
+      uses: actions/checkout@v4
+
+    - name: 🐍 Python 환경 설정
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: 🎬 FFmpeg 설치 (동영상 제작용)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg
+
+    - name: 📦 Python 패키지 설치
+      run: |
+        pip install -r requirements.txt
+
+    - name: 🔐 환경변수 설정
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+      run: |
+        # OpenAI API 키 설정
+        if [ -z "$OPENAI_API_KEY" ]; then
+          echo "❌ OPENAI_API_KEY가 설정되지 않았습니다!"
+          exit 1
+        fi
+        echo "OPENAI_API_KEY=$OPENAI_API_KEY" >> .env
+
+        # Google Service Account 설정
+        if [ -z "$GOOGLE_SERVICE_ACCOUNT" ]; then
+          echo "❌ GOOGLE_SERVICE_ACCOUNT가 설정되지 않았습니다!"
+          exit 1
+        fi
+        echo "$GOOGLE_SERVICE_ACCOUNT" > google_service_account.json
+
+        echo "✅ 환경변수 설정 완료"
+
+    - name: 🎯 글로벌 뉴스 동영상 생성 실행
+      run: |
+        echo "🚀 gloval_news_video_make.py 실행 시작: $(date)"
+        python gloval_news_video_make.py
+        echo "✅ gloval_news_video_make.py 실행 완료: $(date)"
+
+    - name: 📦 동영상 파일 보관
+      run: |
+        mkdir -p completed_videos
+        mv news_video/merged_news_bgm.mp4 completed_videos/merged_news_bgm_$(date '+%Y%m%d_%H%M').mp4
+        echo "동영상이 completed_videos 폴더에 보관되었습니다."
+
+    - name: 📤 YouTube 업로드 단계 준비
+      run: |
+        echo "YouTube 업로드 단계에서 completed_videos/merged_news_bgm_*.mp4 파일을 사용할 수 있습니다."
