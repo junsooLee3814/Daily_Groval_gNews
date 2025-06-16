@@ -5,6 +5,7 @@ on:
     # 매일 오후 6시 50분 (UTC 기준 09:50, 한국시간 18:50)
     - cron: '50 9 * * *'
   workflow_dispatch:
+
 jobs:
   generate_groval_news_video:
     runs-on: ubuntu-latest
