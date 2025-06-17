@@ -51,18 +51,12 @@ jobs:
         python gloval_news_video_make.py
         echo "✅ gloval_news_video_make.py 실행 완료: $(date)"
 
-    - name: 📦 동영상 파일 보관
-      run: |
-        mkdir -p completed_videos
-        mv news_video/merged_news_bgm.mp4 completed_videos/merged_news_bgm_$(date '+%Y%m%d_%H%M').mp4
-        echo "동영상이 completed_videos 폴더에 보관되었습니다."
-
     - name: 아티팩트 업로드
       uses: actions/upload-artifact@v4
       with:
-        name: completed_videos
-        path: completed_videos/
+        name: news_video
+        path: news_video/merged_news_bgm.mp4
 
     - name: 📤 YouTube 업로드 단계 준비
       run: |
-        echo "YouTube 업로드 단계에서 completed_videos/merged_news_bgm_*.mp4 파일을 사용할 수 있습니다."
+        echo "YouTube 업로드 단계에서 news_video/merged_news_bgm.mp4 파일을 사용할 수 있습니다."
