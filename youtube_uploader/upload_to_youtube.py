@@ -42,9 +42,9 @@ if __name__ == '__main__':
     tags = ["글로벌뉴스", "뉴스요약", "AI뉴스", "세계뉴스", "뉴스", "카드뉴스"]
 
     # 동영상 파일 경로 (워크플로우에서 보관한 경로와 일치해야 함)
-    video_dir = "completed_videos"
-    # 가장 최근 파일 찾기
-    files = [f for f in os.listdir(video_dir) if f.startswith("merged_news_bgm_") and f.endswith(".mp4")]
+   video_dir = "news_video"
+   files = [f for f in os.listdir(video_dir) if f.startswith("merged_news_bgm") and f.endswith(".mp4")]
+        
     if not files:
         raise FileNotFoundError("업로드할 동영상 파일이 없습니다.")
     latest_file = max(files, key=lambda x: os.path.getctime(os.path.join(video_dir, x)))
