@@ -58,7 +58,7 @@ jobs:
         echo "동영상이 completed_videos 폴더에 보관되었습니다."
 
     - name: 아티팩트 업로드
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: completed_videos
         path: completed_videos/
