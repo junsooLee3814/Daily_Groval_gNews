@@ -2,7 +2,6 @@ name: daily_groval_gnews
 
 on:
   schedule:
-    # 매일 오후 6시 50분 (UTC 기준 09:50, 한국시간 18:50)
     - cron: '50 9 * * *'
   workflow_dispatch:
 
@@ -32,14 +31,12 @@ jobs:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
       run: |
-        # OpenAI API 키 설정
         if [ -z "$OPENAI_API_KEY" ]; then
           echo "❌ OPENAI_API_KEY가 설정되지 않았습니다!"
           exit 1
         fi
         echo "OPENAI_API_KEY=$OPENAI_API_KEY" >> .env
 
-        # Google Service Account 설정
         if [ -z "$GOOGLE_SERVICE_ACCOUNT" ]; then
           echo "❌ GOOGLE_SERVICE_ACCOUNT가 설정되지 않았습니다!"
           exit 1
@@ -59,6 +56,12 @@ jobs:
         mkdir -p completed_videos
         mv news_video/merged_news_bgm.mp4 completed_videos/merged_news_bgm_$(date '+%Y%m%d_%H%M').mp4
         echo "동영상이 completed_videos 폴더에 보관되었습니다."
+
+    - name: 아티팩트 업로드
+      uses: actions/upload-artifact@v3
+      with:
+        name: completed_videos
+        path: completed_videos/
 
     - name: 📤 YouTube 업로드 단계 준비
       run: |
