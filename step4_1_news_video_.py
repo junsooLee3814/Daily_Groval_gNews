@@ -127,4 +127,10 @@ if __name__ == "__main__":
     merge_videos_ffmpeg(video_paths, COMBINE_OUT_PATH)
     total_duration = sum(durations)
     add_bgm_to_video(COMBINE_OUT_PATH, BGM_PATH, FINAL_OUT_PATH, total_duration)
-    clean_temp_news_videos(SINGLE_DIR, COMBINE_OUT_PATH, intro_out_path) 
+    clean_temp_news_videos(SINGLE_DIR, COMBINE_OUT_PATH, intro_out_path)
+# [추가] completed_videos 폴더로 최종 영상 이동
+    completed_dir = "completed_videos"
+    os.makedirs(completed_dir, exist_ok=True)
+    target_path = os.path.join(completed_dir, "merged_news_bgm.mp4")
+    shutil.copy2(FINAL_OUT_PATH, target_path)
+    print(f"[완료] 최종 영상이 {target_path}에 보관되었습니다.")
