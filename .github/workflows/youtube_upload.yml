@@ -2,7 +2,7 @@ name: YouTube Upload
 
 on:
   schedule:
-    - cron: '30 7 * * *' # 매일 오후 4:30 KST (UTC+9 → UTC 07:30)
+    - cron: '30 6 * * *' # 매일 오후 3:30 KST (UTC+9 → UTC 06:30)
   workflow_dispatch:
   
 jobs:
