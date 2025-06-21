@@ -2,7 +2,7 @@ name: daily_groval_gnews
 
 on:
   schedule:
-    - cron: '15 8 * * *' # 매일 오후 5:15 KST (UTC+9 → UTC 08:15)
+    - cron: '15 7 * * *' # 매일 오후 4:15 KST (UTC+9 → UTC 07:15)
   workflow_dispatch:
 
 jobs:
